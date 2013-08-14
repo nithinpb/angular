@@ -16,17 +16,33 @@
 	.css-form input.ng-valid.ng-dirty {
 		background-color: #78FA89;
 	}
+
+	.message {
+		width: 200px;
+	}
+
 	</style>
 </head>
 <body>
 
 <div ng-controller="Controller">
 	<h1> Currently there are {{users.length }} users</h1>
-	<form novalidate class="css-form">
-		Name: <input type="text" ng-model="user.name" required /> </br>
-		Email: <input type="email" ng-model="user.email" /> </br>
+	<form name="form" novalidate class="css-form">
+		Name: <input type="text" name="uname" ng-model="user.name" required /></br>
+		Email: <input type="email" name="uEmail" ng-model="user.email" required/>
+		 <div ng-show="form.uEmail.$dirty && form.uEmail.$invalid">Invalid:
+          <span ng-show="form.uEmail.$error.required">Tell us your email.</span>
+          <span ng-show="form.uEmail.$error.email">This is not a valid email.</span>
+        </div>
+
+		</br>
 		Gender: <input type="radio" ng-model="user.gender" value="male"/> Male <input type="radio" ng-model="user.gender" value="female"/> Female <br/>
-		<button ng-click="update(user)">ClickMe</button>
+		<input type="checkbox" ng-model="user.agree"/>I agree
+		<div ng-show="user.agree">
+			to give my kidney to <input type="text" placeholder="anyone" ng-model="user.kidneyTo" />
+		</div>
+		<br/>
+		<button ng-click="update(user)">List Me</button>
 	</form>
 	<pre> form={{user | json }} </pre>
 	<ul>
@@ -41,7 +57,8 @@ var app = angular.module('myApp', []);
 app.controller('Controller', function($scope){
 	$scope.users = [];
 	$scope.update = function(user){
-		$scope.users.push( user );
+		if (user.name.length > 0)
+			$scope.users.push( user );
 		$scope.user = {};
 	}
 });
