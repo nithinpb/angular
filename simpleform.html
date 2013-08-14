@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html ng-app="myApp">
+<head>
+	<meta charset="utf-8">
+	<title>Simple Form</title>
+	<link type="text/css" rel="stylesheet" href="">
+	<style type="text/css">
+	body {
+		color: red;
+	}
+	</style>
+</head>
+<body>
+
+<div ng-controller="Controller">
+	<h1> Currently there are {{users.length }} users</h1>
+	<form novalidate class="simple-form">
+		Name: <input type="text" ng-model="user.name" /> </br>
+		Email: <input type="text" ng-model="user.email" /> </br>
+		Gender: <input type="radio" ng-model="user.gender" value="male"/> Male <input type="radio" ng-model="user.gender" value="female"/> Female <br/>
+		<button ng-click="update(user)">ClickMe</button>
+	</form>
+	<pre> form={{user | json }} </pre>
+	<ul>
+		<li ng-repeat="user in users">
+			{{ user | json }}
+		</li>
+	</ul>
+</div>
+<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
+<script type="text/javascript">
+var app = angular.module('myApp', []);
+app.controller('Controller', function($scope){
+	$scope.users = [];
+	$scope.update = function(user){
+		$scope.users.push( user );
+	}
+});
+</script>
+</body>
+</html>
